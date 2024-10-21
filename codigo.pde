@@ -25,7 +25,7 @@ class TimedMessage {
 
     // Reduce el tiempo de vida del mensaje en 1 fotograma
     void update() {
-        timer--;
+        timer--; // Disminuir el temporizador
     }
 
     // Verifica si el tiempo del mensaje ya ha terminado
@@ -61,6 +61,7 @@ int currentQuestionIndex; // Índice actual de la pregunta que se muestra
 
 ArrayList<Float[]> occupiedPositions; // Lista para almacenar las posiciones ocupadas por mensajes
 
+// Configuración inicial del programa
 void setup() {
     fullScreen(); // Modo pantalla completa
     surface.setResizable(false); // Desactivar la capacidad de redimensionar la ventana
@@ -70,12 +71,13 @@ void setup() {
 
     messages = new ArrayList<TimedMessage>(); // Inicializar la lista de mensajes
     occupiedPositions = new ArrayList<Float[]>(); // Inicializar la lista de posiciones ocupadas
-    tweetFont = createFont("Helvetica", 14); // Crear la fuente que se usará para los textos
+    tweetFont = createFont("Helvetica", 36); // Crear la fuente que se usará para los textos
     textFont(tweetFont); // Aplicar la fuente al texto
 
     currentQuestionIndex = (int)random(questions.length); // Elegir una pregunta aleatoria para mostrar
 }
 
+// Ciclo principal de dibujo
 void draw() {
     background(21, 32, 43); // Fondo oscuro similar al modo oscuro de Twitter
 
@@ -90,7 +92,7 @@ void draw() {
         float msgWidth = textWidth(msg.user + ": " + msg.text) + 40; // Ancho del mensaje basado en el texto
         msgWidth = constrain(msgWidth, 0, width - 20); // Limitar el ancho del mensaje para que no exceda la pantalla
 
-        rect(msg.x - 10, msg.y - 30, msgWidth, 50, 5); // Dibujar un rectángulo de fondo para el mensaje
+        rect(msg.x - 10, msg.y - 30, msgWidth, 100, 5); // Dibujar un rectángulo de fondo para el mensaje
 
         fill(255); // Texto blanco
         textAlign(LEFT); // Alinear el texto a la izquierda
@@ -111,11 +113,11 @@ void draw() {
     textAlign(CENTER); // Centrar el texto
     text(questions[currentQuestionIndex], width / 2, height - 170); // Mostrar la pregunta actual en la pantalla
 
-    textSize(16); // Reducir el tamaño de la fuente para el mensaje en curso
+    textSize(36); // Reducir el tamaño de la fuente para el mensaje en curso
     text(currentMessage, width / 2 - textWidth(currentMessage) / 2, height - 95); // Dibujar el mensaje que el usuario está escribiendo
 
     // Área de escritura (fondo para el texto que se escribe)
-    float writeAreaHeight = 40;
+    float writeAreaHeight = 20;
     fill(255); 
     noStroke();
     rect((width - inputWidth) / 2 + 10, height - writeAreaHeight - (height - video.height), inputWidth - 20, writeAreaHeight, 5);
@@ -140,14 +142,14 @@ void draw() {
 // Función que maneja la escritura del usuario
 void keyTyped() {
     if (key != ENTER && key != RETURN && key != BACKSPACE) { // Agregar la tecla al mensaje si no es Enter o Backspace
-        currentMessage += key;
+        currentMessage += key; // Agregar el carácter al mensaje actual
     }
 }
 
 // Función que maneja la presión de teclas específicas
 void keyPressed() {
     if (key == BACKSPACE && currentMessage.length() > 0) { // Si el usuario presiona Backspace, eliminar la última letra
-        currentMessage = currentMessage.substring(0, currentMessage.length() - 1);
+        currentMessage = currentMessage.substring(0, currentMessage.length() - 1); // Eliminar el último carácter
     } else if (key == ENTER || key == RETURN) { // Si el usuario presiona Enter, se envía el mensaje
         if (currentMessage.length() > 0) {
             // Limitar la longitud del mensaje a 100 caracteres
